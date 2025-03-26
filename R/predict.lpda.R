@@ -8,8 +8,7 @@ predict.lpda <- function(object, datatest = object$data,...)
   group = as.factor(as.character(object$group))
   compare = combn(levels(group),2)
 
-  #datatest = datatest[,colnames(object$data)]
-    # when datatest is only one sample
+  # when datatest is only one sample
   if(is.null(nrow(datatest))){
     datatest = data.frame(t(datatest))
   }
@@ -49,23 +48,37 @@ for (i in 1:nrow(datatest))
   else if(Eval[i,j]<0) Mclass[i,j]=levels(comp.j)[2]
 }}
 
-# for(i in 1:nrow(datatest))
-# {
-#  for(j in 1:ncol(object$coef))
-#   {
-#     comp.j = as.factor(compare[,j])
-#     eval = sum(object$coef[-q,j]*datatest[i,])-object$coef[q,j]
-#     if(eval>0) my.class[i,j] = levels(comp.j)[1]
-#     if(eval<0) my.class[i,j]=levels(comp.j)[2]
-#   }
-# }
+my.class = NULL
+for (i in 1:nrow(datatest))
+{
+  xi = factor(Mclass[i,],levels=levels(group))
+  classi = names(table(xi)[table(xi)==max(table(xi))])
+  if(length(classi)>=2){
+    sumEVAL = abs(tapply(as.numeric(Eval[i,]),as.factor(Mclass[i,]),sum))
+    classi = names(sumEVAL)[sumEVAL==max(sumEVAL)]
+  }
+  my.class = c(my.class, classi)
+}
 
-my.class = apply(Mclass,1,moda)
+#my.class = apply(Mclass,1,moda)
 output = list(my.class, Eval)
 names(output) = c("fitted", "eval")
+class(output) <- "predict.lpda"
 output
 }
 
 #-------------------------------------------------------------
-moda <- function(x) {
-  return(names(which.max(table(x))))}
+# moda <- function(x) {
+#   return(names(which.max(table(x))))}
+#-------------------------------------------------------------
+print.predict.lpda <- function(x,...)
+{
+  # x is an object of class inheriting from "predict.lpda"
+  if(!inherits(x, "predict.lpda"))
+    stop("object should be of class 'predict.lpda' ")
+  cat("\n")
+  names(x$fitted) = rownames(x$eval)
+  if(is.null(names(x$fitted))) names(x$fitted) = c(1:length(x$fitted))
+  print(x$fitted)
+  cat("\n")
+}

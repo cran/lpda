@@ -11,7 +11,7 @@ plot.lpda<-function(x, PCscores = FALSE, xlim = NULL,
     ylab = paste("PC-2 ", " ",vars[2],"%",sep="")
 
     plot(x$scores[,c(1,2)], col = as.numeric(x$group)+1, pch=20, main = main,
-         xlab=xlab, ylab=ylab)
+         xlab=xlab, ylab=ylab, ...)
 
     if(length(levels(x$group))==2)
     abline(a = x$coef[3]/x$coef[2], b=-x$coef[1]/x$coef[2],cex=2)
@@ -29,6 +29,11 @@ plot.lpda<-function(x, PCscores = FALSE, xlim = NULL,
    compare = combn(levels(group),2)
    group=as.character(group)
 
+   if(is.null(main)){
+   for (i in 1:pares){
+     main[i]=colnames(eval)[i]
+     }}
+   
    for (i in 1:pares){
      cases = group%in%compare[,i]
      group.i = group[cases]
@@ -46,7 +51,7 @@ plot.lpda<-function(x, PCscores = FALSE, xlim = NULL,
      eje.y[class==1] = c(1:n1)
      eje.y[class==2] = c(1:n2)
      plot(eval[cases,i], eje.y, xlim=xlim, ylim=ylim,col=class+1,pch=20,
-          xlab="Distance to the hyperplane", ylab="Index", main=colnames(eval)[i],...)
+          xlab="Distance to the hyperplane", ylab="Index", main=main[i], ...)
      abline(v=0,lty=2)
 
      legend(legend.pos, levels(group.i),col=c(2,3), pch=20)

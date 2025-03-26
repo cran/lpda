@@ -1,5 +1,6 @@
 \name{lpda}
 \alias{lpda}
+\alias{print.lpda}
 
 \title{Computing discriminating hyperplane for two groups}
 
@@ -10,13 +11,14 @@ This function computes a discriminating hyperplane for two groups with original 
 \usage{
 lpda(data, group, scale = FALSE, pca = FALSE, PC = 2, Variability = NULL,
                  f1 = NULL, f2 = NULL)
+\method{print}{lpda}(x, ...)
 }
 \arguments{
 \item{data}{Matrix containing data. Individuals in rows and variables in columns}
 
 \item{group}{Vector with the variable group}
 
-\item{scale}{Logical indicating if data is standarised. When pca=TRUE data is always scaled.}
+\item{scale}{Logical indicating if it is required standardize data. When pca=TRUE data is always scaled.}
 
 \item{pca}{Logical indicating if Principal Components Analysis is required}
 
@@ -27,16 +29,19 @@ lpda(data, group, scale = FALSE, pca = FALSE, PC = 2, Variability = NULL,
 \item{f1}{Vector with weights for individuals of the first group. If NULL they are equally weighted.}
 
 \item{f2}{Vector with weights for individuals of the second group. If NULL they are equally weighted.}
+
+\item{x}{An object of class "\code{lpda}", a result of a call to \code{lpda}.}
+
+\item{...}{Other arguments passed.}
 }
 
 \value{
 
 \code{lpda} returns an object of class "\code{lpda}".
 
-The functions\code{predict} and \code{plot} can be used to obtain the predicted classes and a plot in two dimensions with the distances to the computed hyperplane for the two classes.
 
   \item{coef}{Hyperplane coefficients}
-  \item{data}{Input data matrix when pca = FALSE and scores when pca = TRUE}
+  \item{data}{Input data matrix}
   \item{group}{Input group vector}
   \item{scale}{Input scale argument}
   \item{pca}{Input pca argument}
@@ -44,6 +49,10 @@ The functions\code{predict} and \code{plot} can be used to obtain the predicted 
   \item{scores}{Principal Components scores. Showed when pca = TRUE}
   \item{var.exp}{A matrix containing the explained variance for each component and the cumulative variance. Showed when pca = TRUE}
   \item{PCs}{Number of Principal Components in the analysis. Showed when pca = TRUE}
+
+
+The functions \code{predict} and \code{plot} can be used to obtain the predicted classes and a plot in two dimensions with the distances to the computed hyperplane for the two classes.
+
   }
 
 \references{
@@ -62,8 +71,8 @@ group = as.factor( c(rep("Spanish",11),rep("Foreign",10)) )
 
 # with concentration data:
 model = lpda(data = palmdates$conc, group = group )
-pred = predict(model)
-table(pred$fitted, group)
+summary(model)
+predict(model)
 plot(model, main = "Palmdates example")
 
 model.pca = lpda(data = palmdates$conc, group = group, pca=TRUE, PC = 2)

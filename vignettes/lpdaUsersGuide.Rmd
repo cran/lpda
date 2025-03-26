@@ -1,8 +1,9 @@
 ---
 title: "lpda: Linear Programming Discriminant Analysis"
 author: 
+- Carmen Gandía, Department of Mathematics, Alicante Universiy, Spain
 - Maria J. Nueda, Department of Mathematics, Alicante Universiy, Spain
-date: "2 March 2023"
+date: "11 March 2025"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{lpda: Linear Programming Discriminant Analysis}
@@ -22,32 +23,42 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(fig.pos = "!h", fig.align="center")
 ```
 
-# The method
+
+**Índex**
+
+1. [The method](#id1)
+2. [The package](#id2)
+3. [The data](#id3)
+4. [lpda function](#id4)
+5. [lpdaCV function](#id5)
+6. [lpda.3D function](#id6)
+7. [lpdaCV.3D function](#id7)
+8. [References](#id8)
+
+## 1. The method {#id1}
 
 `lpda` is an R package that addresses the classification problem through linear programming. The method looks for a hyperplane, *H*, which separates the samples into two groups by minimizing the sum of all the distances to the subspace assigned to the group each individual belongs to. It results in a convex optimization problem for which we find an equivalent linear programming problem. We demonstrated that *H* exists when the centroids of the two groups are not equal [1]. The method has been extended to more than two groups by considering pairwise
 comparisons. Moreover, `lpda` offers the possibility of dealing with Principal Components (PCs) to reduce the dimension of the data avoiding overfitting problems. This option can be applied independently of the number of samples, $n$, and variables, $p$, that is $n>p$ or $n<p$. Compared to other similar techniques it is very fast, mainly because it is based in a linear programming problem [2].
 
-# The package
+Recently, the method has been adapted to 3-dimensional data [4].
+
+## 2. The package {#id2}
 
 ```{r setup}
-library(lpda)
+library(lpda) 
 ```
 
-Main function is `lpda` that collect the input data, standarises the data or applies Principal Component Analysis (PCA) through `lpda.pca` if it is required. Then, it calls to `lpda.fit` as many times as pairwise comparisons there are. The result is a `lpda` type object that is the input to compute predictions through 'predict' function and to visualize results through 'plot' function.
+Main function is `lpda` that collect the input data, standardizes the data or applies Principal Component Analysis (PCA) through `lpda.pca` if it is required. Then, it calls to `lpda.fit` as many times as pairwise comparisons there are. The result is a `lpda` type object that is the input to compute predictions through 'predict' function and to visualize results through 'plot' function.
 
-The package has also three functions to compute by crossvalidation (CV) the classification error in different test data sets. This is helpful to decide an appropriate number of PCs or a specific strategy to compute the hyperplane. The functions are:
+The package has also a function named `lpdaCV` to compute by crossvalidation (CV) the classification error in different test data sets. This is helpful to decide an appropriate number of PCs or a specific strategy to compute the hyperplane. 
 
-* `bestPC`: computes the classification error rate for lpda.pca models obtained with the number of components specified in `PCs` argument. The result is the average classification error rate from the models computed for each number of PCs.
+`lpda.3D` and `lpdaCV.3D` are designed for dealing with 3-dimensional data.
 
-* `bestVariability`: computes the classification error rate for lpda.pca models obtained with the number of components needed to reach the  explained variability specified in `Vars` argument. The result is the average classification error rate from the models computed for each explained variability specified in `Vars`.
+## 3. The data {#id3}
 
-* `lpdaCV`: Computes the classification error rate for a specific model. The user can choose *leaf one out (loo)* CV, that uses `CVloo` function, or random test sets with a specified size with `ktest` option, that uses `CVktest` function.
+`lpda` package includes two data sets concerning data science: `palmdates` and `RNAseq`. The first one is a real data set from a chemometrics study and the second one a simulated RNA-seq experiment. In this document we show the performance of the package with these data sets and with `iris` data, available in `R` package.
 
-# The data
-
-`lpda` package includes two data sets concerning data science: `palmdates` and `RNAseq`. The first one is a real data set from a chemometric study and the second one a simulated RNA-seq experiment. In this document we show the performance of the package with these data sets and with `iris` data, available in `R` package.
-
-## Palmdates description
+### Palmdates data
 
 `Palmdates` is a data set with scores of 21 palm dates including their respective Raman spectra and the concentration of five compounds covering a wide range of concentrations: fibre, glucose, fructose, sorbitol and myo-inositol [3]. The first 11 dates are Spanish (from Elche, Alicante) with no well-defined variety and the last 10 are from other countries and varieties, mainly Arabian. The data set has two data.frames: `conc` with 5 variables and `spectra` with 2050.
 
@@ -59,64 +70,67 @@ names(palmdates$conc)
 ```
 As `conc` and `spectra`, are very correlated, the application of the method with PCs reduces substantially the dimension. 
 
-## RNAseq description
-This data set has been simulated as Negative Binomial distributed and transformed to rpkm  (Reads per kilo base per million mapped reads). It contains  600 genes (in columns) and 60 samples (rows), 30 of each one of the experimental groups. First 30 samples are from first group and the remaining samples from the second one. It has been simulated with few variables (genes) that discriminate between groups. There is few correlation and a lot of noise.
+### RNAseq data
+This data set has been simulated as Negative Binomial distributed and transformed to rpkm (Reads per kilo base per million mapped reads). 
+  It is a 3-dimensional array, that contains gene expression from 600 genes measured to 60 samples through 4 time-points.
+  First 10 samples are from first group and the remaining samples from the second one. It has been simulated with few variables (genes) that discriminate between groups. There is few correlation and a lot of noise.
+
 
 ```{r}
 data("RNAseq")
 dim(RNAseq)
-head(RNAseq[,1:6])
+head(RNAseq[,1:6,1:2])
 ```
 
 
-# Example 1: `Palmdates` data
+## 4. `lpda` function {#id4}
 
-## Chemical variables
+### Palmdates: Chemical variables
 First we apply the method with the first two variables: `fibre` and `sorbitol` to show the performance of the package. 
 The application of the method with two variables allows the visualization of the hyperplane in two dimensions, in this case, a straight line.
   
 ``` {r, echo = TRUE, message = FALSE}
    group = as.factor( c(rep("Spanish",11), rep("Other",10)) )
    model1 = lpda(data = palmdates$conc[,1:2], group = group )
+   model1
+   names(model1)
 ```
 
-First output of `lpda` is a matrix with the coefficients of the hyperplane: $a'x=b$ for each pair-wise comparison. In this example:
-```{r}
-model1$coef
-```
-being `r round(model1$coef[1],3)` and `r round(model1$coef[2],3)`  the coefficients of `fibre` and  `sorbitol`  respectively and `r round(model1$coef[3],3)` the constant $b$. We can plot the line on the points, that represent the samples, with the following code:
+One of the outputs of `lpda` is a matrix with the coefficients of the hyperplane: $a'x=b$ for each pair-wise comparison. In this example, `r round(model1$coef[1],3)` and `r round(model1$coef[2],3)`  the coefficients of `fibre` and  `sorbitol`  respectively and `r round(model1$coef[3],3)` the constant $b$. 
+
+In cases with 2 variables, as this simple example, we can plot the line on the points, that represents the samples, with the following code:
 
 
 ``` {r, echo = TRUE, message = FALSE}
    plot(palmdates$conc[,1:2], col = as.numeric(group)+1, pch = 20, 
-   main = "Palmdates example")
+   main = "Model 1. Palmdates: fibre & sorbitol")
    abline(model1$coef[3]/model1$coef[2], -model1$coef[1]/model1$coef[2], cex = 2)
    legend("bottomright", c("Other","Spanish"),col = c(2,3), pch = 20, cex=0.8)
 ```
 
-Predicted group with the model is obtained with `predict` function. Confusion matrix is computed as follows. We observe that all the samples are well classified.
+Predicted group with the model is obtained with `predict` function. Confusion matrix can be obtained with `summary`. We observe that all the samples are well classified.
 
 
 ```{r}
-pred = predict(model1)
-table(pred$fitted, group)
+predict(model1)
+summary(model1)
 ```
 
 By considering the five concentration variables, all samples are well classified as well. As a 5-dimensional plot can not be showed, we offer the possibility of seeing a plot that shows the situation of samples with respect to $H$. Y-axis represents order in which they appear in the data matrix and X-axis distances of each sample to $H$.
 
 ``` {r, echo = TRUE, message = FALSE}
    model2 = lpda(data = palmdates$conc, group = group )
-   plot(model2)
+   plot(model2, main="Model 2. Palmdates: all conc variables")
 ```
 
 Another option is the application of `lpda` to the first PCs scores. When data is highly correlated, two components are usually preferred. In such case choosing as `plot` arguments `PCscores = TRUE` we will visualize the first two PCs, indicating in the axis the proportion of explained variance by each PC. Moreover if there are two groups, as in this example, the optimal hyperplane is also showed.
 
 ``` {r, echo = TRUE, message = FALSE}
 model3 = lpda(data = palmdates$conc, group = group, pca = TRUE, Variability = 0.7)
-plot(model3, PCscores = TRUE, main = "PCA-Substances palmdates")
+plot(model3, PCscores = TRUE, main = "Model 3. Palmdates: PCA on conc variables")
 ```
 
-## Spectra variables
+### Palmdates: Spectra variables
 
 When having data sets with more variables than individuals PCA is not directly applicable. In `lpda` we have implemented the possibility of dealing with such problem, working with the equivalences between the PCA of the data matrix and the transposed matrix. 
 
@@ -133,71 +147,25 @@ legend("topleft", c("Other","Spanish"),col = c(2,3),lty = 1, cex=0.8)
 
 ```
 
-Due to the high correlation the application of `lpda` to all the spectra variables and to the first 2 PCs gives the same solution: 0 prediction errors.
+Due to the high correlation the application of `lpda` to all the spectra variables and to the first 2 PCs (model4) give the same solution: 0 prediction errors.
 
 ``` {r, echo = TRUE, message = FALSE}
-model4 <- lpda(data = palmdates$spectra, group = group)
-pred = predict(model4)
-table(pred$fitted, group)
-```
-
-``` {r, echo = TRUE, message = FALSE}
-model5 = lpda(data = palmdates$spectra, group = group, pca = TRUE, Variability = 0.9)
-plot(model5, PCscores = TRUE, main = "Spectra palmdates")
+model4 = lpda(data = palmdates$spectra, group = group, pca = TRUE, Variability = 0.9)
+plot(model4, PCscores = TRUE, main = "Model 4. Palmdates: PCA on Spectra variables")
 ```
 
 Following example shows how predict the group of a test set that does not participate in the model. In this set we include two samples of each group.
 
 ``` {r, echo = TRUE, message = FALSE}
 test = c(10,11,12,13)
-model6 = lpda(data = palmdates$spectra[-test,], group = group[-test], pca = TRUE,
+model5 = lpda(data = palmdates$spectra[-test,], group = group[-test], pca = TRUE,
               Variability = 0.9)
-pred = predict(model6, palmdates$spectra[test,])
-pred$fitted
+predict(model5,  datatest=palmdates$spectra[test,])
+summary(model5, datatest=palmdates$spectra[test,], grouptest = group[test])
 ```
 
-We can also use `lpdaCV` function to compute the predicted error in different test sets by crossvalidation with a specific model. As explained before, two strategies are implemented: `loo` (leave one out) and `ktest` that is specified in `CV` argument and by default is `loo`. When `ktest` is selected, `ntest` is the size of test set (samples not used for computing the model, only to evaluate the number of prediction errors) and `R` is the times the model is computed and evaluated with different training and test sets.
 
-```{r eval=FALSE}
-lpdaCV(palmdates$spectra, group, pca = TRUE, CV = "loo")
-lpdaCV(palmdates$spectra, group, pca = TRUE, CV = "ktest", ntest = 5, R = 10)
-```
-
-CV results are so good due to the clear difference between the two groups in spectra data. We continue with CV functions in Example 2 that deals noisier data. 
-
-# Example 2: RNAseq simulated data
-
-This section applies cros-validation functions with RNAseq data that is noisier than palmdates data and has 60 samples. Firstly we can see that the model with all the data gets a separating hyperplane. 
- 
-``` {r, echo = TRUE, message = FALSE}
-  group = as.factor(rep(c("G1","G2"), each = 30))
-  model = lpda(RNAseq, group) # model with all the variables
-  pred = predict(model)
-  table(pred$fitted, group)
-```
-
-Evaluating the error in several test sets with CV functions we can see that,  to avoid overfitting, it is preferable the application of `lpda` with PCA:
-
-``` {r, echo = TRUE, message = FALSE}
-lpdaCV(RNAseq, group, pca = FALSE, CV = "ktest", ntest = 10)
-lpdaCV(RNAseq, group, pca = TRUE, CV = "ktest", ntest = 10)
-```
-
-However, the success of PCA solution depends on the chosen number of  components. For this reason it is recommended the application of  `bestVariability` or `bestPC` functions, that can help to decide the number of PCs that better fit the data.
-
-``` {r, echo = TRUE, message = FALSE}
-bestVariability(RNAseq, group, ntest = 10, R = 10, Vars = c(0.1, 0.9))
-bestPC(RNAseq, group, ntest = 10, R = 10, PCs = c(2, 10))
-```
-
-Therefore `variability = 0.9` or `PC=10` are preferable and the model for future predictions will be:
-
-
-``` {r, echo = TRUE, eval=FALSE}
-lpda(RNAseq, group, pca = TRUE, Variability = 0.9)
-```
-
-# Example 3: `iris` data
+### `iris` data
 
 To show an example with more than two groups we use the famous (Fisher's or Anderson's) `iris` data set that is available in base `R`. The `iris` data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris `setosa`, `versicolor`, and `virginica`.
 
@@ -205,8 +173,7 @@ Results with the four variables give 2 classification errors. In this case the m
 
 ```{r, fig.height=3, fig.width=9, out.width = "100%"}
 model.iris = lpda(iris[,-5], iris[,5])
-pred.iris = predict(model.iris)
-table(pred.iris$fitted, iris[,5])
+summary(model.iris)
 ```
 ```{r, fig.height=3, fig.width=9, out.width = "100%",echo=FALSE}
 oldpar <- par(mfrow = c(1,3))
@@ -218,17 +185,91 @@ The application of `lpda` with 3 PCs gives the same classification error. Functi
 
 ```{r}
 model.iris2 = lpda(iris[,-5], iris[,5], pca=TRUE, PC=3)
-pred.iris2 = predict(model.iris2)
-table(pred.iris2$fitted, iris[,5])
+summary(model.iris2)
 plot(model.iris2, PCscores= TRUE)
 ```
 
 
 
-# References
+## 5. `lpdaCV` function {#id5}
 
-[1] Nueda, M.J., Gandía, C, Molina, M.D. (2022) LPDA: A new classification method based on linear programming. PLOS ONE 17(7): e0270403. https://doi.org/10.1371/journal.pone.0270403
+We can use `lpdaCV` function to compute the predicted error in different test sets by crossvalidation with a specific model. Two strategies are implemented: `loo` (leave one out) and `ktest` that is specified in `CV` argument. When `ktest` is selected, `ntest` is the size of test set (samples not used for computing the model, only to evaluate the number of prediction errors) and `R` is the times the model is computed and evaluated with different training and test sets.
 
-[2] Nueda, M.J., Gandía, C. and Molina, M.D. Classifying sequencing data using linear programming. Euro30 Conference, Dublin, June-2019.
+```{r eval=FALSE}
+lpdaCV(palmdates$spectra, group, pca = TRUE, CV = "loo")
+lpdaCV(palmdates$spectra, group, pca = TRUE, CV = "ktest", ntest = 5, R = 10)
+```
+
+CV results are so good due to the clear difference between the two groups in spectra data. We can explore ´lpdaCV` possibilities with one of the matrices of RNAseq simulated data, that is noisier than spectra data. Firstly we can see that the model with all the data gets a separating hyperplane. 
  
-[3] Abdrabo, S.S., Gras, L., Grindlay, G. and Mora, J. (2022) Evaluation of Fourier Transform-Raman spectroscopy for carbohydrates characterization of palm dates (Phoenix dactylifera). Food Analytical Methods. Submitted.
+``` {r, echo = TRUE, results='hide', message = FALSE}
+  data(RNAseq) # 3-dimensional array
+  data = RNAseq[,,3] # the third data matrix with dimensions 20 x 600
+  group = as.factor(rep(c("G1","G2"), each = 10))
+  model = lpda(data, group) # model with all the variables
+  summary(model)
+```
+
+Evaluating the error in several test sets with CV functions we can see that,  to avoid overfitting, it is preferable the application of `lpda` with PCA:
+
+``` {r, echo = TRUE, message = FALSE}
+lpdaCV(data, group, pca = FALSE, CV = "ktest", ntest = 5)
+lpdaCV(data, group, pca = TRUE, CV = "ktest", ntest = 5)
+```
+
+As the success of PCA solution depends on the chosen number of  components, there exist the possibility of applying `lpdaCV` for several percentages of explained variability, for PCs from original data, or several number of PCs, specified in a vector. Examples:
+
+``` {r, echo = TRUE, message = FALSE}
+lpdaCV(data, group, pca = TRUE, CV = "ktest", Variability = c(0.1, 0.9))
+lpdaCV(data, group, pca = TRUE, CV = "ktest", PC= c(2, 10))
+```
+
+
+## 6. `lpda.3D` function {#id6}
+This function has been designed to apply the method `lpda` to 3-dimensional data through 2 strategies:
+
+1. Applying `lpda` through the third dimension (pfac=FALSE).
+2. Applying `lpda` to the parafac scores (pfac=TRUE).
+
+For the second strategy function `parafac` from `multiway` package is used. More details in [4].
+
+``` {r, echo = TRUE}
+  data(RNAseq) # 3-dimensional array
+  dim(RNAseq)
+  group = as.factor(rep(c("G1","G2"), each = 10))
+```
+
+### Strategy 1
+``` {r, echo = TRUE}
+  model3D = lpda.3D(RNAseq, group)
+  summary(model3D)
+  predict(model3D)
+  plot(model3D, mfrow=c(2,2))
+```  
+
+### Strategy 2: with parafac
+``` {r, echo = TRUE}
+  model3Ds2 = lpda.3D(RNAseq, group, pfac=TRUE, nfac=2)
+  model3Ds2$MOD$mod.pfac$Rsq
+  predict(model3Ds2)
+  summary(model3Ds2)
+  plot(model3Ds2, pfacscores=FALSE, main="Parafac Model")
+  plot(model3Ds2, pfacscores=TRUE, cex=1.5, main="Parafac components")
+```  
+
+## 7. `lpdaCV.3D` function {#id7}
+In the same way as `lpdaCV`, this function is useful to evaluate the model and to decide the number of factors in the parafac model.
+``` {r, echo = TRUE}
+  lpdaCV.3D(RNAseq, group , CV = "ktest", R=5, ntest=5, pfac=TRUE, nfac=c(2,10))
+```  
+
+## 8. References {#id8}
+
+[1] Nueda, M.J.; Gandía, C. and Molina, M.D. (2022) LPDA: A new classification method based on linear programming. PLOS ONE 17(7): e0270403. https://doi.org/10.1371/journal.pone.0270403
+
+[2] Nueda, M.J.; Gandía, C. and Molina, M.D. Classifying sequencing data using linear programming. Euro30 Conference, Dublin, June-2019.
+ 
+[3] Abdrabo, S.S.; Gras, L. and Mora, J. (2013) Analytical methods applied to the chemical characterization and classification of palm dates (Phoenix dactylifera L.) from Elche's Palm Grove. Ph.D. thesis, Departamento de Química Analítica, Nutrición y Bromatología. Universidad de Alicante.
+
+[4] Gandía, C.; Molina, M.D. and  Nueda, M.J. (2025) Adapting the lpda R package to Multiway data. In preparation.
+

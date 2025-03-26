@@ -1,7 +1,8 @@
 \name{lpdaCV}
 \alias{lpdaCV}
+\alias{print.lpdaCV}
 
-\title{lpdaCV evaluates the error rate classification with a crossvalidation procedure}
+\title{Crossvalidation procedure for lpda evaluation}
 
 \description{
 lpdaCV evaluates the error rate classification with a crossvalidation procedure
@@ -9,7 +10,9 @@ lpdaCV evaluates the error rate classification with a crossvalidation procedure
 
 \usage{
 lpdaCV(data, group, scale = FALSE, pca = FALSE, PC = 2, Variability = NULL,
-                   CV = "loo", ntest = 10, R = 10, f1 = NULL, f2 = NULL)
+                   CV = "ktest", ntest = 10, R = 10, f1 = NULL, f2 = NULL)
+                   
+\method{print}{lpdaCV}(x, ...)
 }
 
 \arguments{
@@ -17,7 +20,7 @@ lpdaCV(data, group, scale = FALSE, pca = FALSE, PC = 2, Variability = NULL,
 
 \item{group}{Vector with the variable group}
 
-\item{scale}{Logical indicating if data is standarised.}
+\item{scale}{Logical indicating if it is required standardize data.}
 
 \item{pca}{Logical indicating if a reduction of dimension is required}
 
@@ -35,20 +38,26 @@ lpdaCV(data, group, scale = FALSE, pca = FALSE, PC = 2, Variability = NULL,
 \item{f1}{Vector with weights for individuals of the first group. If NULL they are equally weighted.}
 
 \item{f2}{Vector with weights for individuals of the second group. If NULL they are equally weighted.}
+
+\item{x}{An object of class "\code{lpdaCV}", a result of a call to \code{lpdaCV} or \code{lpdaCV.3D}.}
+
+\item{...}{Other arguments passed.}
 }
 
 \value{
 
-\code{lpdaCV} The prediction error rate.
+\code{lpdaCV} returns the prediction error rate classification.
   }
 
 \author{Maria Jose Nueda, \email{mj.nueda@ua.es}}
 
 \examples{
 
+### RNAseq is a 3-dimensional array
   data(RNAseq)
-  group = as.factor(rep(c("G1","G2"), each = 30))
-  lpdaCV(RNAseq, group, pca = TRUE, CV = "ktest", ntest = 2)
+  data = RNAseq[,,3]
+  group = as.factor(rep(c("G1","G2"), each = 10))
+  lpdaCV(data, group, pca = TRUE, CV = "ktest", ntest = 2)
 
   }
 

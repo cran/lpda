@@ -39,8 +39,20 @@ lpda <- function(data, group, scale = FALSE, pca = FALSE, PC = 2, Variability = 
     output[[9]] = res.pca$PCs
     names(output)[6:9] = c("loadings", "scores","var.exp", "PCs")
   }
-
+output$call = match.call()
   class(output)<-"lpda"
   output
 }
 
+#------------------------------------------------------------------------------------
+print.lpda <- function(x,...)
+{
+  # x is an object of class inheriting from "lpda"
+  if(!inherits(x, "lpda"))
+    stop("x should be of class 'lpda' ")
+  cat("Call:\n")
+  print(x$call)
+  cat("Coefficients: \n")
+  print(as.numeric(x$coef), ...)
+  cat("\n")
+}

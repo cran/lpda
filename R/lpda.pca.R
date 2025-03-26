@@ -12,6 +12,7 @@ lpda.pca <- function(data, group, PC = 2, Variability = NULL)
   loadings = pca$loadings
   colnames(scores) = colnames(loadings)=paste("C",1:ncol(scores),sep="")
   var.exp = pca$var.exp
+  colnames(var.exp) = c("Var.exp","Cum.Var.exp")
 
   #----------------------------------------------------------
   # Choosing the number of PCs: q
