@@ -1,4 +1,4 @@
-plot.lpda.3D<-function(x, pfacscores=FALSE, xlim = NULL, main = NULL, legend.pos = "topright", ...)
+plot.lpda.3D<-function(x, pfacscores=FALSE, main = NULL, legend.pos = "topright", ...)
 {
   # x is an object of class inheriting from "lpda.3D"
   if(!inherits(x, "lpda.3D"))
@@ -12,7 +12,7 @@ plot.lpda.3D<-function(x, pfacscores=FALSE, xlim = NULL, main = NULL, legend.pos
   else{
     par(...)
     for (i in 1:length(x$MOD)){
-    plot(x$MOD[[i]], main = main,...)
+    plot(x$MOD[[i]], main = main[i],...)
     }
   }}
   if(pfacscores)

@@ -74,7 +74,7 @@ summary(model.iris)
 
 ## ----fig.height=3, fig.width=9, out.width = "100%",echo=FALSE-----------------
 oldpar <- par(mfrow = c(1,3))
-plot(model.iris)
+plot(model.iris, col = c(2,3,4), cex = 1.5)
 par(oldpar)
 
 ## -----------------------------------------------------------------------------
@@ -110,7 +110,7 @@ lpdaCV(data, group, pca = TRUE, CV = "ktest", PC= c(2, 10))
   model3D = lpda.3D(RNAseq, group)
   summary(model3D)
   predict(model3D)
-  plot(model3D, mfrow=c(2,2))
+  plot(model3D, mfrow=c(2,2), main =  paste("Time =", c(1:4), sep = " "))
 
 ## ----echo = TRUE--------------------------------------------------------------
   model3Ds2 = lpda.3D(RNAseq, group, pfac=TRUE, nfac=2)

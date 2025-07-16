@@ -9,8 +9,9 @@ in two dimensions with the distances to the computed hyperplane of each individu
 }
 
 \usage{
-\method{plot}{lpda}(x, PCscores = FALSE, xlim = NULL, main = NULL,
-legend.pos = "topright", ...)
+\method{plot}{lpda}(x, PCscores = FALSE, main = NULL, xlab = NULL, ylab = NULL,
+                    col= NULL, pch = NULL, lty = NULL,
+                    legend.pos = "topright",...)
 }
 
 \arguments{
@@ -18,9 +19,17 @@ legend.pos = "topright", ...)
 
 \item{PCscores}{Logical to show the first 2 PCscores. Only possible when PCA is applied.}
 
-\item{xlim}{An optional vector with two values with the x-axis range. If omitted, it will be computed.}
-
 \item{main}{An optional title for the plot.}
+
+\item{xlab}{An optional title for x-axis.}
+
+\item{ylab}{An optional title for y-axis.}
+
+\item{col}{An optional vector with colours for the groups.}
+
+\item{pch}{An integer specifying the symbol to be used in plotting points. When NULL, pch=20.}
+
+\item{lty}{The line type. If it is not specified, lty = 2 for the distances to the hiperplane and lty = 1 for PCs plot}
 
 \item{legend.pos}{The position for the legend. By default it is topright. NULL when no legend is required.}
 

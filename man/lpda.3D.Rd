@@ -26,7 +26,7 @@ lpda.3D(data, group, scale = FALSE,  pfac = FALSE, nfac = 2,
 
 \item{nstart}{Number of random starts for multiway analysis.}
 
-\item{seed}{A single value to reproduce same results in multiway methods. If NULL the start will be random.}
+\item{seed}{A single value to reproduce same results in multiway methods.}
 
 \item{f1}{Vector with weights for individuals of the first group. If NULL they are equally weighted.}
 

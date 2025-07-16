@@ -3,7 +3,7 @@ title: "lpda: Linear Programming Discriminant Analysis"
 author: 
 - Carmen Gandía, Department of Mathematics, Alicante Universiy, Spain
 - Maria J. Nueda, Department of Mathematics, Alicante Universiy, Spain
-date: "11 March 2025"
+date: "03 June 2025"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{lpda: Linear Programming Discriminant Analysis}
@@ -38,9 +38,9 @@ knitr::opts_chunk$set(fig.pos = "!h", fig.align="center")
 ## 1. The method {#id1}
 
 `lpda` is an R package that addresses the classification problem through linear programming. The method looks for a hyperplane, *H*, which separates the samples into two groups by minimizing the sum of all the distances to the subspace assigned to the group each individual belongs to. It results in a convex optimization problem for which we find an equivalent linear programming problem. We demonstrated that *H* exists when the centroids of the two groups are not equal [1]. The method has been extended to more than two groups by considering pairwise
-comparisons. Moreover, `lpda` offers the possibility of dealing with Principal Components (PCs) to reduce the dimension of the data avoiding overfitting problems. This option can be applied independently of the number of samples, $n$, and variables, $p$, that is $n>p$ or $n<p$. Compared to other similar techniques it is very fast, mainly because it is based in a linear programming problem [2].
+comparisons. Moreover, `lpda` offers the possibility of dealing with Principal Components (PCs) to reduce the dimension of the data avoiding overfitting problems. This option can be applied independently of the number of samples, $n$, and variables, $p$, that is $n>p$ or $n<p$. Compared to other similar techniques it is very fast, mainly because it is based in a linear programming problem [3].
 
-Recently, the method has been adapted to 3-dimensional data [4].
+Recently, the method has been adapted to 3-dimensional data [2].
 
 ## 2. The package {#id2}
 
@@ -60,7 +60,7 @@ The package has also a function named `lpdaCV` to compute by crossvalidation (CV
 
 ### Palmdates data
 
-`Palmdates` is a data set with scores of 21 palm dates including their respective Raman spectra and the concentration of five compounds covering a wide range of concentrations: fibre, glucose, fructose, sorbitol and myo-inositol [3]. The first 11 dates are Spanish (from Elche, Alicante) with no well-defined variety and the last 10 are from other countries and varieties, mainly Arabian. The data set has two data.frames: `conc` with 5 variables and `spectra` with 2050.
+`Palmdates` is a data set with scores of 21 palm dates including their respective Raman spectra and the concentration of five compounds covering a wide range of concentrations: fibre, glucose, fructose, sorbitol and myo-inositol [1]. The first 11 dates are Spanish (from Elche, Alicante) with no well-defined variety and the last 10 are from other countries and varieties, mainly Arabian. The data set has two data.frames: `conc` with 5 variables and `spectra` with 2050.
 
 ```{r}
 data("palmdates")
@@ -177,7 +177,7 @@ summary(model.iris)
 ```
 ```{r, fig.height=3, fig.width=9, out.width = "100%",echo=FALSE}
 oldpar <- par(mfrow = c(1,3))
-plot(model.iris)
+plot(model.iris, col = c(2,3,4), cex = 1.5)
 par(oldpar)
 ```
 
@@ -231,7 +231,7 @@ This function has been designed to apply the method `lpda` to 3-dimensional data
 1. Applying `lpda` through the third dimension (pfac=FALSE).
 2. Applying `lpda` to the parafac scores (pfac=TRUE).
 
-For the second strategy function `parafac` from `multiway` package is used. More details in [4].
+For the second strategy function `parafac` from `multiway` package is used. More details in [2].
 
 ``` {r, echo = TRUE}
   data(RNAseq) # 3-dimensional array
@@ -244,7 +244,7 @@ For the second strategy function `parafac` from `multiway` package is used. More
   model3D = lpda.3D(RNAseq, group)
   summary(model3D)
   predict(model3D)
-  plot(model3D, mfrow=c(2,2))
+  plot(model3D, mfrow=c(2,2), main =  paste("Time =", c(1:4), sep = " "))
 ```  
 
 ### Strategy 2: with parafac
@@ -265,11 +265,15 @@ In the same way as `lpdaCV`, this function is useful to evaluate the model and t
 
 ## 8. References {#id8}
 
-[1] Nueda, M.J.; Gandía, C. and Molina, M.D. (2022) LPDA: A new classification method based on linear programming. PLOS ONE 17(7): e0270403. https://doi.org/10.1371/journal.pone.0270403
+[1] Abdrabo, S.S.; Gras, L. and Mora, J. (2013) Analytical methods applied to the chemical characterization and classification of palm dates (Phoenix dactylifera L.) from Elche's Palm Grove. Ph.D. thesis, Departamento de Química Analítica, Nutrición y Bromatología. Universidad de Alicante.
 
-[2] Nueda, M.J.; Gandía, C. and Molina, M.D. Classifying sequencing data using linear programming. Euro30 Conference, Dublin, June-2019.
+[2] Gandía, C.; Molina, M.D. and  Nueda, M.J. (2025) lpda R package: Linear Programming Discriminant Analysis for Multiway data. Submitted.
+
+[3] Nueda, M.J.; Gandía, C. and Molina, M.D. (2022) LPDA: A new classification method based on linear programming. PLOS ONE 17(7): e0270403. https://doi.org/10.1371/journal.pone.0270403
+
+[4] Nueda, M.J.; Gandía, C. and Molina, M.D. Classifying sequencing data using linear programming. Euro30 Conference, Dublin, June-2019.
  
-[3] Abdrabo, S.S.; Gras, L. and Mora, J. (2013) Analytical methods applied to the chemical characterization and classification of palm dates (Phoenix dactylifera L.) from Elche's Palm Grove. Ph.D. thesis, Departamento de Química Analítica, Nutrición y Bromatología. Universidad de Alicante.
 
-[4] Gandía, C.; Molina, M.D. and  Nueda, M.J. (2025) Adapting the lpda R package to Multiway data. In preparation.
+
+
 

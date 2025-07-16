@@ -1,9 +1,9 @@
 lpda.3D <- function(data, group, scale = FALSE,  pfac = FALSE, nfac = 2,
-                     nstart = 10, seed=2, f1 = NULL, f2 = NULL)
+                     nstart = 10, seed = 2, f1 = NULL, f2 = NULL)
 {
   group = as.factor(as.character(group))
 if(pfac) {
- # set.seed(seed)
+  set.seed(seed)
   mod.pfac = parafac(data, nfac = nfac, nstart = nstart, verbose=FALSE)
   A = mod.pfac$A[,1:nfac]
   mod = lpda(A, group, scale, f1=f1, f2=f2)

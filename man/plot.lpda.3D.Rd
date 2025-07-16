@@ -9,7 +9,7 @@ in two dimensions with the distances to the computed hyperplane of each individu
 }
 
 \usage{
-\method{plot}{lpda.3D}(x, pfacscores = FALSE, xlim = NULL, main = NULL,
+\method{plot}{lpda.3D}(x, pfacscores = FALSE, main = NULL,
 legend.pos = "topright", ...)
 }
 
@@ -17,8 +17,6 @@ legend.pos = "topright", ...)
 \item{x}{Object of class inheriting from "lpda"}
 
 \item{pfacscores}{Logical to show the first 2 parafac scores. Only possible when parafac is applied.}
-
-\item{xlim}{An optional vector with two values with the x-axis range. If omitted, it will be computed.}
 
 \item{main}{An optional title for the plot.}
 

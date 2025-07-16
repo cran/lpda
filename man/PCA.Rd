@@ -5,7 +5,7 @@
 }
 
 \description{
-Computes a Principal Component Analysis when both when p>n and when p<=n.
+Computes a Principal Component Analysis when p>n and when p<=n.
 }
 
 \usage{
