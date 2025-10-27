@@ -1,6 +1,6 @@
-8bae95f61e253a98fa3d8402dfc8df16 *DESCRIPTION
+2c9aaedec058cfef366624b03b407671 *DESCRIPTION
 f2fe8b8b7c205269a1b3196f7185682f *NAMESPACE
-eca4a6298a239e5a4beffb2d5f101fde *NEWS.md
+a48155be16790c0273d1d955e25856f7 *NEWS.md
 ef90698bd6033cf1d568754113537dca *R/PCA.R
 68f0355227e093a8de1b09d5a9279bd7 *R/lpda.3D.R
 a984708307d9d83af6764b5d4b971183 *R/lpda.R
@@ -18,9 +18,9 @@ a508165ca569dc29cadeedda94820be2 *R/summary.lpda.R
 a612ae7b43d1eb4992693439ae53d4b3 *build/vignette.rds
 9eadee50c4c0b9910bd3628b32033221 *data/RNAseq.RData
 b4901ace33f502b86ab95bcddbbdc881 *data/palmdates.RData
-d1fe92a5c49c8ad82b36ab4405c89131 *inst/doc/lpdaUsersGuide.R
-f4f9d61fafe8ca7693c2a82be42f6700 *inst/doc/lpdaUsersGuide.Rmd
-ff3804e1cdd8b1f930bb102a11a2bda9 *inst/doc/lpdaUsersGuide.html
+ed28e395515489e2cbdd2364aa5dfc6a *inst/doc/lpdaUsersGuide.R
+7a92e5f2424d73265cdd4da043b05c31 *inst/doc/lpdaUsersGuide.Rmd
+8019ec7c09a74d30a886bd0b07fb7e8e *inst/doc/lpdaUsersGuide.html
 6f1b746e6e4ca1bc69c3908329fce920 *man/PCA.Rd
 04eeb3cca20a50868b82c5822d11971a *man/RNAseq.Rd
 7b95b6764e5bcf79bcf54824d5736013 *man/lpda.3D.Rd
@@ -54,4 +54,4 @@ c774f1d36d5cde27ed25da143427fc7a *vignettes/figures/README-unnamed-chunk-5-1.png
 41eb4c735e1b2fdf1bb4ad52db4673b3 *vignettes/figures/README-unnamed-chunk-7-1.png
 9b99510d87ce9ba6828f4f09634e32f3 *vignettes/figures/README-unnamed-chunk-8-1.png
 0e33b32220c32d36ffe38cc0c0264cfc *vignettes/figures/README-unnamed-chunk-9-1.png
-f4f9d61fafe8ca7693c2a82be42f6700 *vignettes/lpdaUsersGuide.Rmd
+7a92e5f2424d73265cdd4da043b05c31 *vignettes/lpdaUsersGuide.Rmd

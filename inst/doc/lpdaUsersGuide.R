@@ -98,6 +98,7 @@ lpdaCV(data, group, pca = FALSE, CV = "ktest", ntest = 5)
 lpdaCV(data, group, pca = TRUE, CV = "ktest", ntest = 5)
 
 ## ----echo = TRUE, message = FALSE---------------------------------------------
+set.seed(1)
 lpdaCV(data, group, pca = TRUE, CV = "ktest", Variability = c(0.1, 0.9))
 lpdaCV(data, group, pca = TRUE, CV = "ktest", PC= c(2, 10))
 

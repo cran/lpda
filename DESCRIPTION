@@ -1,7 +1,7 @@
 Package: lpda
 Type: Package
 Title: Linear Programming Discriminant Analysis
-Version: 1.2.1
+Version: 1.2.2
 Authors@R: person(given = c("María", "José"),family = "Nueda",
                     role = c("aut", "cre"),
                     email = "mj.nueda@ua.es")
@@ -19,8 +19,8 @@ Suggests: rmarkdown, knitr, testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2025-07-16 08:48:22 UTC; USUARIO
+Packaged: 2025-10-27 11:24:10 UTC; USUARIO
 Author: María José Nueda [aut, cre]
 Maintainer: María José Nueda <mj.nueda@ua.es>
 Repository: CRAN
-Date/Publication: 2025-07-16 09:50:06 UTC
+Date/Publication: 2025-10-27 13:10:14 UTC

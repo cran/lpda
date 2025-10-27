@@ -1,3 +1,7 @@
+## version 1.2.2
+- October-2025
+- Vignette updated
+
 ## version 1.2.1
 - July-2025
 - plot.lpda and plot.lpda.3D functions improved

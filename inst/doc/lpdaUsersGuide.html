@@ -51,8 +51,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -63,7 +64,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -645,32 +646,33 @@ see that, to avoid overfitting, it is preferable the application of
 <span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt;     ntest = 5)</span></span>
 <span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt; Prediction Error Rate for analysed model/models: </span></span>
 <span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; Original Data </span></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt;           0.2</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt;          0.16</span></span>
 <span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="fu">lpdaCV</span>(data, group, <span class="at">pca =</span> <span class="cn">TRUE</span>, <span class="at">CV =</span> <span class="st">&quot;ktest&quot;</span>, <span class="at">ntest =</span> <span class="dv">5</span>)</span>
 <span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
 <span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#&gt; lpdaCV(data = data, group = group, pca = TRUE, CV = &quot;ktest&quot;, </span></span>
 <span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt;     ntest = 5)</span></span>
 <span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt; Prediction Error Rate for analysed model/models: </span></span>
 <span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt; PC-2 </span></span>
-<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co">#&gt; 0.02</span></span></code></pre></div>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co">#&gt;    0</span></span></code></pre></div>
 <p>As the success of PCA solution depends on the chosen number of
 components, there exist the possibility of applying <code>lpdaCV</code>
 for several percentages of explained variability, for PCs from original
 data, or several number of PCs, specified in a vector. Examples:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">lpdaCV</span>(data, group, <span class="at">pca =</span> <span class="cn">TRUE</span>, <span class="at">CV =</span> <span class="st">&quot;ktest&quot;</span>, <span class="at">Variability =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>))</span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt; lpdaCV(data = data, group = group, pca = TRUE, Variability = c(0.1, </span></span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt;     0.9), CV = &quot;ktest&quot;)</span></span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; Prediction Error Rate for analysed model/models: </span></span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; Variability-0.1 Variability-0.9 </span></span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt;            0.04            0.11</span></span>
-<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="fu">lpdaCV</span>(data, group, <span class="at">pca =</span> <span class="cn">TRUE</span>, <span class="at">CV =</span> <span class="st">&quot;ktest&quot;</span>, <span class="at">PC=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>))</span>
-<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
-<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; lpdaCV(data = data, group = group, pca = TRUE, PC = c(2, 10), </span></span>
-<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt;     CV = &quot;ktest&quot;)</span></span>
-<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; Prediction Error Rate for analysed model/models: </span></span>
-<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt;  PC-2 PC-10 </span></span>
-<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt;  0.03  0.12</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">lpdaCV</span>(data, group, <span class="at">pca =</span> <span class="cn">TRUE</span>, <span class="at">CV =</span> <span class="st">&quot;ktest&quot;</span>, <span class="at">Variability =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; lpdaCV(data = data, group = group, pca = TRUE, Variability = c(0.1, </span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt;     0.9), CV = &quot;ktest&quot;)</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; Prediction Error Rate for analysed model/models: </span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; Variability-0.1 Variability-0.9 </span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt;            0.02            0.06</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="fu">lpdaCV</span>(data, group, <span class="at">pca =</span> <span class="cn">TRUE</span>, <span class="at">CV =</span> <span class="st">&quot;ktest&quot;</span>, <span class="at">PC=</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>))</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; lpdaCV(data = data, group = group, pca = TRUE, PC = c(2, 10), </span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt;     CV = &quot;ktest&quot;)</span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; Prediction Error Rate for analysed model/models: </span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt;  PC-2 PC-10 </span></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt;  0.03  0.10</span></span></code></pre></div>
 </div>
 <div id="id6" class="section level2">
 <h2>6. <code>lpda.3D</code> function</h2>

@@ -220,6 +220,7 @@ lpdaCV(data, group, pca = TRUE, CV = "ktest", ntest = 5)
 As the success of PCA solution depends on the chosen number of  components, there exist the possibility of applying `lpdaCV` for several percentages of explained variability, for PCs from original data, or several number of PCs, specified in a vector. Examples:
 
 ``` {r, echo = TRUE, message = FALSE}
+set.seed(1)
 lpdaCV(data, group, pca = TRUE, CV = "ktest", Variability = c(0.1, 0.9))
 lpdaCV(data, group, pca = TRUE, CV = "ktest", PC= c(2, 10))
 ```
